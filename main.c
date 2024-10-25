@@ -27,7 +27,7 @@ int main(int argc, char* argv[]) {
     }
 
     filename = argv[1];
-    omp_set_num_threads(12);
+    omp_set_num_threads(12); // nnuemro de hilos para la parelizacion
 
     
     // Cargar la imagen (no paralelizable)
@@ -95,7 +95,7 @@ void aplicarFiltro(int *imagen, int *imagenProcesada, int width, int height) {
     int Gy[3][3] = {{-1, -2, -1}, {0, 0, 0}, {1, 2, 1}};
 
     
-    #pragma omp parallel for
+    #pragma omp parallel for // paraliza el bucle for que lo que hace es recorrer los pixeles de la imagen
     for (int y = 1; y < height - 1; y++) {
         for (int x = 1; x < width - 1; x++) {
             int sumX = 0;
@@ -120,7 +120,7 @@ void aplicarFiltro(int *imagen, int *imagenProcesada, int width, int height) {
 int calcularSumaPixeles(int *imagen, int width, int height) {
     int suma = 0;
     
-    #pragma omp parallel for reduction(+:suma)
+    #pragma omp parallel for reduction(+:suma) // paraleliza el bucle for y con reduction para sumar los pixeles de la imagen 
     for (int i = 0; i < width * height; i++) {
         suma += imagen[i];
     }
